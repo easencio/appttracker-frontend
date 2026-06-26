@@ -1,0 +1,60 @@
+<div class="form-container">
+  <h2>Add Appointment</h2>
+
+  <form [formGroup]="appointmentForm" (ngSubmit)="onSave()">
+    <div class="form-group">
+      <label for="staffMemberId">Staff Member</label>
+      <select id="staffMemberId" formControlName="staffMemberId">
+        <option value="">-- Select Staff Member --</option>
+        @for (member of staffMembers; track member.id) {
+          <option [value]="member.id">
+            {{ member.firstName }} {{ member.lastName }} ({{ member.credentials }})
+          </option>
+        }
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Patients (select one or more)</label>
+      <div class="patient-list">
+        @for (patient of patients; track patient.id) {
+          <label>
+            <input
+              type="checkbox"
+              [checked]="isPatientSelected(patient.id!)"
+              (change)="togglePatient(patient.id!)"
+            />
+            {{ patient.firstName }} {{ patient.lastName }} (ID: {{ patient.id }})
+          </label>
+        }
+        @if (patients.length === 0) {
+          <span>No patients available. Add patients first.</span>
+        }
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="appointmentDate">Date</label>
+      <input id="appointmentDate" type="date" formControlName="appointmentDate" />
+    </div>
+
+    <div class="form-group">
+      <label for="startTime">Start Time</label>
+      <input id="startTime" type="time" formControlName="startTime" />
+    </div>
+
+    <div class="form-group">
+      <label for="endTime">End Time</label>
+      <input id="endTime" type="time" formControlName="endTime" />
+    </div>
+
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="appointmentForm.invalid || selectedPatientIds.length === 0">Save</button>
+      <button type="button" class="cancel" (click)="onCancel()">Cancel</button>
+    </div>
+  </form>
+</div>

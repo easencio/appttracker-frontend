@@ -1,0 +1,38 @@
+<div class="list-container">
+  <h2>Patients</h2>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  @if (patients.length === 0 && !errorMessage) {
+    <p class="empty">No patients on record yet.</p>
+  }
+
+  @if (patients.length > 0) {
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Gender</th>
+          <th>Age</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (patient of patients; track patient.id) {
+          <tr>
+            <td>{{ patient.id }}</td>
+            <td>{{ patient.firstName }}</td>
+            <td>{{ patient.lastName }}</td>
+            <td>{{ patient.gender }}</td>
+            <td>{{ patient.age }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  <button class="back-btn" (click)="goHome()">Back to Home</button>
+</div>

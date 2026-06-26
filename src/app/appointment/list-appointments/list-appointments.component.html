@@ -1,0 +1,47 @@
+<div class="list-container">
+  <h2>Appointments</h2>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  @if (appointments.length === 0 && !errorMessage) {
+    <p class="empty">No appointments on record yet.</p>
+  }
+
+  @if (appointments.length > 0) {
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Staff Member</th>
+          <th>Patients</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (appt of appointments; track appt.id) {
+          <tr>
+            <td>{{ appt.id }}</td>
+            <td>{{ appt.appointmentDate }}</td>
+            <td>{{ appt.startTime }}</td>
+            <td>{{ appt.endTime }}</td>
+            <td>
+              {{ appt.staffMember.firstName }} {{ appt.staffMember.lastName }}
+              (ID: {{ appt.staffMember.id }})
+            </td>
+            <td>
+              @for (patient of appt.patients; track patient.id) {
+                <span>{{ patient.firstName }} {{ patient.lastName }} (ID: {{ patient.id }})</span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  <button class="back-btn" (click)="goHome()">Back to Home</button>
+</div>

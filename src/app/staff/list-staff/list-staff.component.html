@@ -1,0 +1,38 @@
+<div class="list-container">
+  <h2>Staff Members</h2>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  @if (staffMembers.length === 0 && !errorMessage) {
+    <p class="empty">No staff members on record yet.</p>
+  }
+
+  @if (staffMembers.length > 0) {
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Gender</th>
+          <th>Credentials</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (member of staffMembers; track member.id) {
+          <tr>
+            <td>{{ member.id }}</td>
+            <td>{{ member.firstName }}</td>
+            <td>{{ member.lastName }}</td>
+            <td>{{ member.gender }}</td>
+            <td>{{ member.credentials }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  <button class="back-btn" (click)="goHome()">Back to Home</button>
+</div>
