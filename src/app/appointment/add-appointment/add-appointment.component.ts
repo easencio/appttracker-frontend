@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -22,7 +22,8 @@ export class AddAppointmentComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     this.appointmentForm = this.fb.group({
       staffMemberId:   ['', Validators.required],
@@ -34,8 +35,12 @@ export class AddAppointmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.apiService.getStaffMembers().subscribe({ next: (data) => this.staffMembers = data });
-    this.apiService.getPatients().subscribe({ next: (data) => this.patients = data });
+    this.apiService.getStaffMembers().subscribe({
+      next: (data) => { this.staffMembers = data; this.cdr.detectChanges(); }
+    });
+    this.apiService.getPatients().subscribe({
+      next: (data) => { this.patients = data; this.cdr.detectChanges(); }
+    });
   }
 
   get selectedPatientIds(): number[] {

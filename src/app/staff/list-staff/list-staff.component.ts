@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
@@ -15,12 +15,16 @@ export class ListStaffComponent implements OnInit {
   staffMembers: StaffMember[] = [];
   errorMessage = '';
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.apiService.getStaffMembers().subscribe({
-      next: (data) => this.staffMembers = data,
-      error: () => this.errorMessage = 'Could not load staff members. Is the backend running?'
+      next: (data) => { this.staffMembers = data; this.cdr.detectChanges(); },
+      error: () => { this.errorMessage = 'Could not load staff members. Is the backend running?'; this.cdr.detectChanges(); }
     });
   }
 
